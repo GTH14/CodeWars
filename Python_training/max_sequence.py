@@ -15,34 +15,39 @@ def max_sequence(arr):
     elif len(arr_np)-np.sum(np.sign(arr_np)) == 0:
         return sum(arr)
     else:
-        # min_sum_left, min_index_left = min_sequence(arr)
-        # min_sum_right, min_index_right = min_sequence(arr[::-1])
-        # min_index_right = len(arr) - min_index_right
+        min_sum_left, min_index_left = min_sequence(arr)
+        new_arr = arr[min_index_left:len(arr)]
+        min_sum_right, min_index_right = min_sequence(new_arr[::-1])
+        min_index_right = len(arr) - min_index_right
+
+        min_sum_right1, min_index_right1 = min_sequence(arr[::-1])
+        min_index_right1 = len(arr) - min_index_right1
+        new_arr1 = arr[0:min_index_right1]
+        min_sum_left1, min_index_left1 = min_sequence(new_arr1)
         
-        min_sum_left = min_sequence(arr)
-        min_sum_right = min_sequence(arr[::-1])
-        
-        return sum(arr) - min_sum_left - min_sum_right
+        if min_sum_left+min_sum_right < min_sum_left1+min_sum_right1:
+            return sum(arr) - min_sum_left - min_sum_right
+        else:
+            return sum(arr) - min_sum_left1 - min_sum_right1
 
 def min_sequence(arr):
     min_sum = 0
-    # min_index = 0
+    min_index = 0
     current_sum = 0
     for index in range(len(arr)):
         current_sum += arr[index]
         if current_sum < min_sum:
             min_sum = current_sum
-            # min_index = index
-    return min_sum
+            min_index = index+1
+    return min_sum, min_index
 
 def main():
-    array_test = [7, 4, 11, -11, 39, 36, 10, -6, 37, -10, -32, 44, -26, -34, 43, 43]
+    array_test = [-1,1,-5, 2, -1]
     neg_array = [-1,-2,-1,-5,-3,-4]
     res = max_sequence(neg_array)
     print(max_sequence(neg_array))
     pos_array = [1,2,1,5,3,4]
     print(max_sequence(pos_array))
-    print(pos_array[::-1])
     print(sum(array_test))
     print(max_sequence(array_test))
 main()
