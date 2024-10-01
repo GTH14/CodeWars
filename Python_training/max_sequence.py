@@ -12,6 +12,8 @@ def max_sequence(arr):
     arr_np = np.array(arr)
     if len(arr_np) == 0 or len(arr_np)+np.sum(np.sign(arr_np)) == 0:
         return 0
+    elif len(arr_np)-np.sum(np.sign(arr_np)) == 0:
+        return sum(arr)
     else:
         
         return 1
@@ -21,5 +23,7 @@ def main():
     # array_test = [-2, 1, -3, 4, -1, 2, 1, -5, 4]
     neg_array = [-1,-2,-1,-5,-3,-4]
     res = max_sequence(neg_array)
-    print(res)
+    print(max_sequence(neg_array))
+    pos_array = [1,2,1,5,3,4]
+    print(max_sequence(pos_array))
 main()
