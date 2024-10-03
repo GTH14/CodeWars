@@ -42,12 +42,15 @@ def min_sequence(arr):
     return min_sum, min_index
 
 def main():
-    array_test = [-1,1,-5, 2, -1]
-    neg_array = [-1,-2,-1,-5,-3,-4]
-    res = max_sequence(neg_array)
-    print(max_sequence(neg_array))
-    pos_array = [1,2,1,5,3,4]
-    print(max_sequence(pos_array))
-    print(sum(array_test))
+    array_test = [-2, 1, -3, 4, -1, 2, 1, -5, 4]
     print(max_sequence(array_test))
+    np.random.seed(1)
+    for length_var in range(10,20):
+        seq = np.random.randint(low=-20, high=20, size=length_var)
+        print(seq)
+        print(max_sequence(seq))
+    for length_var in range(20,50):
+        seq = np.random.randint(low=-40, high=40, size=length_var)
+        print(seq)
+        print(max_sequence(seq))
 main()
