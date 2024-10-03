@@ -7,7 +7,7 @@
 
 # Idea: it searches first for the minimum sum subarray going from the left to the right
 import numpy as np
-
+import time
 def max_sequence(arr):
     arr_np = np.array(arr)
     len_arr = len(arr)
@@ -17,24 +17,30 @@ def max_sequence(arr):
         return sum(arr)
     else:
         sign_arr = np.sign(arr_np)
-        pos_index = []
-        pos_island = np.array([])
-        arr_island = np.array([])
-        for index in range(len_arr):
-            if sign_arr[index] > 0:                        
-                if np.any(pos_index):
-                    if index - pos_index[-1] -1 == 0:
-                        pos_island[-1] += arr[index]
-                        arr_island[-1] += arr[index]
-                    else:
-                        np.append(pos_island, arr[index])
-                else: 
-                    np.append(pos_island, arr[index])
-                pos_index.append(index)
-                np.append(arr_island, arr[index])
+        arr_island = []
         
+        for index in range(len_arr):
+            if not(len(arr_island)) and sign_arr[index]>0:
+                arr_island.append(arr[index])
+            elif index == len_arr-1 and sign_arr[index]<0:
+                break
+            elif sum(arr_island):
+                if sign_arr[index] == sign_arr[index-1]:
+                    arr_island[-1] += arr[index]
+                else:
+                    arr_island.append(arr[index]) 
+        max_value = arr_island[0]
+        if len(arr_island)>2:
+            for index in range(1,len(arr_island), 2):
+                if max_value > -arr_island[index] and arr_island[index+1] > -arr_island[index]:
+                    max_value = max_value + arr_island[index] + arr_island[index+1]
+                elif max_value < -arr_island[index] and arr_island[index+1] > max_value:
+                    max_value = arr_island[index+1]    
+        return max_value
+                
 
 def main():
+    t_init = time.time_ns()
     array_test = [-2, 1, -3, 4, -1, 2, 1, -5, 4]
     print(max_sequence(array_test))
     np.random.seed(1)
@@ -46,4 +52,6 @@ def main():
         seq = np.random.randint(low=-40, high=40, size=length_var)
         print(seq)
         print(max_sequence(seq.tolist()))
+    t_fin = time.time_ns()
+    print(t_fin - t_init)
 main()
