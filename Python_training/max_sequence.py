@@ -17,22 +17,22 @@ def max_sequence(arr):
         return sum(arr)
     else:
         sign_arr = np.sign(arr_np)
+        pos_index = []
         pos_island = np.array([])
+        arr_island = np.array([])
         for index in range(len_arr):
-            if sign_arr[index] > 0:
-                np.append(pos_island, index)
-                
+            if sign_arr[index] > 0:                        
+                if np.any(pos_index):
+                    if index - pos_index[-1] -1 == 0:
+                        pos_island[-1] += arr[index]
+                        arr_island[-1] += arr[index]
+                    else:
+                        np.append(pos_island, arr[index])
+                else: 
+                    np.append(pos_island, arr[index])
+                pos_index.append(index)
+                np.append(arr_island, arr[index])
         
-def min_sequence(arr):
-    min_sum = 0
-    min_index = 0
-    current_sum = 0
-    for index in range(len(arr)):
-        current_sum += arr[index]
-        if current_sum < min_sum:
-            min_sum = current_sum
-            min_index = index+1
-    return min_sum, min_index
 
 def main():
     array_test = [-2, 1, -3, 4, -1, 2, 1, -5, 4]
