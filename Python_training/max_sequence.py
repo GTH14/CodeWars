@@ -16,13 +16,13 @@ def max_sequence(arr):
     elif len_arr-np.sum(np.sign(arr_np)) == 0:
         return sum(arr)
     else:
-        sign_arr = np.sign(arr_np)
+        sign_arr = 1*(arr_np>=0)
         arr_island = []
         
         for index in range(len_arr):
-            if not(len(arr_island)) and sign_arr[index]>0:
+            if not(sum(arr_island)) and sign_arr[index]>0:
                 arr_island.append(arr[index])
-            elif index == len_arr-1 and sign_arr[index]<0:
+            elif sum(sign_arr[index::]) == 0:
                 break
             elif sum(arr_island):
                 if sign_arr[index] == sign_arr[index-1]:
@@ -30,12 +30,15 @@ def max_sequence(arr):
                 else:
                     arr_island.append(arr[index]) 
         max_value = arr_island[0]
+        max_index = 0
         if len(arr_island)>2:
             for index in range(1,len(arr_island), 2):
-                if max_value > -arr_island[index] and arr_island[index+1] > -arr_island[index]:
-                    max_value = max_value + arr_island[index] + arr_island[index+1]
+                inter_sum = sum(arr_island[max_index+1:index+1])
+                if max_value > -inter_sum and arr_island[index+1] > -inter_sum :
+                    max_value = max_value + inter_sum  + arr_island[index+1]
                 elif max_value < -arr_island[index] and arr_island[index+1] > max_value:
-                    max_value = arr_island[index+1]    
+                    max_value = arr_island[index+1]
+                    max_index = index+1
         return max_value
                 
 
@@ -51,7 +54,7 @@ def main():
     for length_var in range(20,50):
         seq = np.random.randint(low=-40, high=40, size=length_var)
         print(seq)
-        print(max_sequence(seq.tolist()))
+        print(max_sequence(seq))
     t_fin = time.time_ns()
     print(t_fin - t_init)
 main()
