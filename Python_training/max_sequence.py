@@ -10,25 +10,32 @@ import numpy as np
 
 def max_sequence(arr):
     arr_np = np.array(arr)
-    if len(arr_np) == 0 or len(arr_np)+np.sum(np.sign(arr_np)) == 0:
+    len_arr = len(arr)
+    if len_arr == 0 or len_arr+np.sum(np.sign(arr_np)) == 0:
         return 0
-    elif len(arr_np)-np.sum(np.sign(arr_np)) == 0:
+    elif len_arr-np.sum(np.sign(arr_np)) == 0:
         return sum(arr)
     else:
         min_sum_left, min_index_left = min_sequence(arr)
-        new_arr = arr[min_index_left:len(arr)]
+        new_arr = arr[min_index_left:len_arr]
         min_sum_right, min_index_right = min_sequence(new_arr[::-1])
-        min_index_right = len(arr) - min_index_right
+        min_index_right = len_arr - min_index_right
 
         min_sum_right1, min_index_right1 = min_sequence(arr[::-1])
-        min_index_right1 = len(arr) - min_index_right1
+        min_index_right1 = len_arr - min_index_right1
         new_arr1 = arr[0:min_index_right1]
         min_sum_left1, min_index_left1 = min_sequence(new_arr1)
         
         if min_sum_left+min_sum_right < min_sum_left1+min_sum_right1:
-            return sum(arr) - min_sum_left - min_sum_right
+            if len_arr - min_index_left != 0 and min_index_right != 0:
+                return sum(arr) - min_sum_left - min_sum_right
+            else:
+                return np.max(arr_np)
         else:
-            return sum(arr) - min_sum_left1 - min_sum_right1
+            if len_arr - min_index_left1 != 0 and min_index_right1 != 0:
+                return sum(arr) - min_sum_left1 - min_sum_right1
+            else:
+                return np.max(arr_np)
 
 def min_sequence(arr):
     min_sum = 0
@@ -52,5 +59,5 @@ def main():
     for length_var in range(20,50):
         seq = np.random.randint(low=-40, high=40, size=length_var)
         print(seq)
-        print(max_sequence(seq))
+        print(max_sequence(seq.tolist()))
 main()
