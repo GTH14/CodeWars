@@ -11,10 +11,10 @@ import numpy as np
 def max_sequence(arr):
     arr_np = np.array(arr)
     len_arr = len(arr)
-    if len_arr == 0 or len_arr+np.sum(np.sign(arr_np)) == 0:
+    if len_arr == 0 or sum(1*(arr_np>0)) == 0:
         return 0
-    elif len_arr-np.sum(np.sign(arr_np)) == 0:
-        return sum(arr)
+    # elif len_arr-np.sum(np.sign(arr_np)) == 0:
+    #     return sum(arr)
     else:
         min_sum_left, min_index_left = min_sequence(arr)
         new_arr = arr[min_index_left:len_arr]
@@ -27,15 +27,34 @@ def max_sequence(arr):
         min_sum_left1, min_index_left1 = min_sequence(new_arr1)
         
         if min_sum_left+min_sum_right < min_sum_left1+min_sum_right1:
-            if len_arr - min_index_left != 0 and min_index_right != 0:
+            if len_arr - min_index_left > 0 and min_index_right > 0:
                 return sum(arr) - min_sum_left - min_sum_right
             else:
-                return np.max(arr_np)
+                return max(arr)
         else:
-            if len_arr - min_index_left1 != 0 and min_index_right1 != 0:
+            if len_arr - min_index_left1 > 0 and min_index_right1 > 0:
                 return sum(arr) - min_sum_left1 - min_sum_right1
             else:
-                return np.max(arr_np)
+                return max(arr)
+
+def remove_neg_at_edge(arr):
+    removed_index_left = 0
+    sum_neg_left = 0
+    for index in range(len(arr)):
+        if arr[index] <= 0:
+            removed_index_left = index+1
+            sum_neg_left += arr[index]
+        else:
+            break
+    removed_index_right = len(arr)    
+    sum_neg_right = 0
+    for index in reversed(range(len(arr))):
+        if arr[index] <=0:
+            removed_index_right = index-1
+            sum_neg_right += arr[index]
+        else:
+            break
+    return arr[removed_index_left:removed_index_right], sum_neg_left, sum_neg_right
 
 def min_sequence(arr):
     min_sum = 0
@@ -51,11 +70,12 @@ def min_sequence(arr):
 def main():
     array_test = [-2, 1, -3, 4, -1, 2, 1, -5, 4]
     print(max_sequence(array_test))
-    np.random.seed(1)
-    for length_var in range(10,20):
-        seq = np.random.randint(low=-20, high=20, size=length_var)
-        print(seq)
-        print(max_sequence(seq))
+    print(array_test[::-1])
+    np.random.seed(10)
+    # for length_var in range(10,20):
+    #     seq = np.random.randint(low=-20, high=20, size=length_var)
+    #     print(seq)
+    #     print(max_sequence(seq.tolist()))
     for length_var in range(20,50):
         seq = np.random.randint(low=-40, high=40, size=length_var)
         print(seq)
