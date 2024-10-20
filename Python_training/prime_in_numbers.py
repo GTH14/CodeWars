@@ -8,7 +8,29 @@
 import math
 
 def prime_factors(n):
-    pass
+    factors = []
+    orders = []
+    factor_msg = ""
+    primes = [2]
+    count_factors = 0
+    count_primes = 0
+    quotient = n
+    while quotient != 1:
+        remainder = quotient%primes[count_primes]
+        if remainder == 0:
+            factors.append(primes[count_primes])
+            orders.append(order_prime(primes[count_primes], quotient))
+            quotient = quotient//(primes[count_primes]**orders[count_factors])
+            count_factors += 1
+        count_primes += 1
+        primes = next_prime(primes)
+    
+    for index in range(len(factors)):
+        if orders[index] != 1:
+            factor_msg += "(" + str(factors[index]) + "**" + str(orders[index]) + ")"
+        else:
+            factor_msg += "(" + str(factors[index]) + ")"
+    return factor_msg
     
 def is_prime(primes,n):
     max_value = math.ceil(math.sqrt(n))
@@ -43,5 +65,7 @@ def order_prime(prime, n):
         order += 1
     return order
 def main():
-    # print(order_prime())
+    # pass
+    n = 97
+    print(prime_factors(n))
 main()
