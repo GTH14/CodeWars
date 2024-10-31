@@ -1,1 +1,1 @@
-This is the codes that I made to solve CodeWars exercises
+These are the codes that I made to solve CodeWars exercises
