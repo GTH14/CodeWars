@@ -85,7 +85,7 @@ def determine_primes_method2(n):
     pass
 def main():
     # pass
-    n = 99
-    print(determine_primes_method1(n))
+    n = 2013213372
+    # print(determine_primes_method1(n))
     print(prime_factors(n))
 main()
